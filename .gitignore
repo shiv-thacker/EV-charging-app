@@ -8,12 +8,14 @@ node_modules/
 dist/
 web-build/
 
+# Ignore .txt files
+*.txt
+
 # Native
 *.orig.*
 *.jks
 *.p8
 *.p12
-*.txt
 *.key
 *.mobileprovision
 
