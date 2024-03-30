@@ -1,20 +1,34 @@
-import { View, Text, ActivityIndicator, FlatList, Alert } from "react-native";
-import React, { useEffect, useState, useCallback } from "react";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  FlatList,
+  Alert,
+  Platform,
+} from "react-native";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import Colors from "../../Utils/Colors";
 import { db } from "../../Utils/FirebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { useUser } from "@clerk/clerk-expo";
+// import { useUser } from "@clerk/clerk-expo";
 import PlaceItem from "../HomeScreen/Components/PlaceItem";
 import { useFocusEffect } from "@react-navigation/native";
+import { Authcontext } from "../../Context/Authcontext";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const ios = Platform.OS == "ios";
 export default function FavouriteScreen() {
+  const { top } = useSafeAreaInsets();
   const [favList, setFavList] = useState([]);
-  const { user } = useUser();
+  // const { user } = useUser();
   const [loading, setLoading] = useState(false);
+  const { user } = useContext(Authcontext);
 
   useFocusEffect(
     useCallback(() => {
-      getFav();
-    }, [])
+      user && getFav();
+    }, [user])
   );
 
   useEffect(() => {
@@ -27,7 +41,7 @@ export default function FavouriteScreen() {
     setFavList([]);
     const q = query(
       collection(db, "ev-fav-place"),
-      where("email", "==", user?.primaryEmailAddress?.emailAddress)
+      where("email", "==", user?.email)
     );
 
     const querySnapshot = await getDocs(q);
@@ -39,21 +53,20 @@ export default function FavouriteScreen() {
     });
   };
   return (
-    <View>
+    <View style={{ paddingTop: ios ? top : top + hp(0) }}>
       <Text style={{ padding: 10, fontFamily: "outfit-medium", fontSize: 30 }}>
         My Favourite <Text style={{ color: Colors.PRIMARY }}>Place</Text>
       </Text>
-      {!favList ? (
+      {favList.length == 0 ? (
         <View
           style={{
-            display: "flex",
-            height: "100%",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <ActivityIndicator size={"large"} color={Colors.PRIMARY} />
-          <Text style={{ fontFamily: "outfit", marginTop: 5 }}>Loading...</Text>
+          <Text style={{ fontSize: hp(3), marginTop: hp(5) }}>
+            Fav places not found...
+          </Text>
         </View>
       ) : (
         <FlatList

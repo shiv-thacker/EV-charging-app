@@ -11,7 +11,7 @@ import {
   Platform,
   Linking,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import Colors from "../../../Utils/Colors";
 import GlobalApi from "../../../Utils/GlobalApi";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,17 +19,19 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../Utils/FirebaseConfig";
-import { useUser } from "@clerk/clerk-expo";
+// import { useUser } from "@clerk/clerk-expo";
 import { deleteDoc } from "firebase/firestore";
 import { verticalScale } from "../../../Utils/Dimensions";
+import { Authcontext } from "../../../Context/Authcontext";
 
 const PlaceItem = ({ place, isFav, markedFav }) => {
+  const { user } = useContext(Authcontext);
   const PLACE_PHOTO_BASE_URL = "https://places.googleapis.com/v1/";
-  const { user } = useUser();
+  // const { user } = useUser();
   const onSetFav = async (place) => {
     await setDoc(doc(db, "ev-fav-place", place?.id.toString()), {
       place: place,
-      email: user?.primaryEmailAddress?.emailAddress,
+      email: user?.email,
     });
     ToastAndroid.show("fav place addded!", ToastAndroid.BOTTOM);
     markedFav();

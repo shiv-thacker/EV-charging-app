@@ -10,17 +10,19 @@ import PlaceItem from "./PlaceItem";
 import { SelectedMarkerContext } from "../../../Context/SelectedMarkerContext";
 import { db } from "../../../Utils/FirebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { useUser } from "@clerk/clerk-expo";
+// import { useUser } from "@clerk/clerk-expo";
 import { useFocusEffect } from "@react-navigation/native";
+import { Authcontext } from "../../../Context/Authcontext";
 
 const PlaceListView = ({ placeList }) => {
+  const { user } = useContext(Authcontext);
   useFocusEffect(
     useCallback(() => {
       getFav();
     }, [])
   );
 
-  const { user } = useUser();
+  // const { user } = useUser();
   const [favList, setFavList] = useState([]);
   useEffect(() => {
     user && getFav();
@@ -31,7 +33,7 @@ const PlaceListView = ({ placeList }) => {
     setFavList([]);
     const q = query(
       collection(db, "ev-fav-place"),
-      where("email", "==", user?.primaryEmailAddress?.emailAddress)
+      where("email", "==", user?.email)
     );
 
     const querySnapshot = await getDocs(q);
