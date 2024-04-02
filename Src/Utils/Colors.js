@@ -4,4 +4,5 @@ export default {
   WHITE: "#FFFFFF",
   BLACK: "#000000",
   WHITE_TRANSP: "#ffffff87",
+  BLUE: "#0000FF",
 };

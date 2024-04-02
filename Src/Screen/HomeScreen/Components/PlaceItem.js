@@ -21,7 +21,11 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../Utils/FirebaseConfig";
 // import { useUser } from "@clerk/clerk-expo";
 import { deleteDoc } from "firebase/firestore";
-import { verticalScale } from "../../../Utils/Dimensions";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../../../Utils/Dimensions";
 import { Authcontext } from "../../../Context/Authcontext";
 
 const PlaceItem = ({ place, isFav, markedFav }) => {
@@ -68,100 +72,105 @@ const PlaceItem = ({ place, isFav, markedFav }) => {
   return (
     <View
       style={{
-        borderRadius: 10,
         width: Dimensions.get("window").width,
       }}
     >
       <LinearGradient
         colors={["transparent", "#ffffff", "#ffffff"]}
-        style={{ padding: 15 }}
+        style={{
+          padding: 15,
+        }}
       >
-        <ImageBackground
-          source={
-            place?.photos
-              ? {
-                  uri:
-                    PLACE_PHOTO_BASE_URL +
-                    place?.photos[0]?.name +
-                    "/media?key=" +
-                    GlobalApi.API_KEY +
-                    "&maxHeightPx=800&maxWidthPx=1000",
-                }
-              : require("../../../../assets/Images/ev-vehicle.png")
-          }
-          style={{
-            width: "100%",
-            borderRadius: 10,
-            height: verticalScale(150),
-            resizeMode: "cover",
-          }}
+        <View
+          style={{ borderColor: Colors.GRAY, borderWidth: moderateScale(1) }}
         >
-          {!isFav ? (
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                margin: 5,
-                right: 0,
-              }}
-              onPress={() => onSetFav(place)}
-            >
-              <Ionicons name="heart-outline" size={24} color="white" />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                margin: 5,
-                right: 0,
-              }}
-              onPress={() => onRemoveFav(place.id)}
-            >
-              <Ionicons name="heart-sharp" size={24} color="red" />
-            </TouchableOpacity>
-          )}
-        </ImageBackground>
-        <View style={{ padding: 15 }}>
-          <Text style={{ fontSize: 17, fontFamily: "outfit-medium" }}>
-            {place.displayName?.text}
-          </Text>
-          <Text style={{ color: Colors.GRAY, fontFamily: "outfit" }}>
-            {place?.shortFormattedAddress}
-          </Text>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          <ImageBackground
+            source={
+              place?.photos
+                ? {
+                    uri:
+                      PLACE_PHOTO_BASE_URL +
+                      place?.photos[0]?.name +
+                      "/media?key=" +
+                      GlobalApi.API_KEY +
+                      "&maxHeightPx=800&maxWidthPx=1000",
+                  }
+                : require("../../../../assets/Images/ev-vehicle.png")
+            }
+            style={{
+              width: "100%",
+              borderRadius: 10,
+              height: verticalScale(150),
+              resizeMode: "cover",
+            }}
           >
-            <View style={{ marginTop: 5 }}>
-              <Text
+            {!isFav ? (
+              <TouchableOpacity
                 style={{
-                  fontFamily: "outfit",
-                  color: Colors.GRAY,
-                  fontSize: 17,
+                  position: "absolute",
+                  margin: 5,
+                  right: 0,
                 }}
+                onPress={() => onSetFav(place)}
               >
-                Connectors
-              </Text>
-              <Text
+                <Ionicons name="heart-outline" size={24} color="white" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
                 style={{
-                  fontFamily: "outfit-medium",
-                  fontSize: 20,
-                  marginTop: 2,
+                  position: "absolute",
+                  margin: 5,
+                  right: 0,
                 }}
+                onPress={() => onRemoveFav(place.id)}
               >
-                {place?.evChargeOptions?.connectorCount} Points
-              </Text>
-            </View>
-            <Pressable
-              style={{
-                padding: 12,
-                backgroundColor: Colors.PRIMARY,
-                borderRadius: 6,
-                paddingHorizontal: 14,
-                height: verticalScale(50),
-              }}
-              onPress={() => onDirectionClick()}
+                <Ionicons name="heart-sharp" size={24} color="red" />
+              </TouchableOpacity>
+            )}
+          </ImageBackground>
+          <View style={{ padding: 15 }}>
+            <Text style={{ fontSize: 17, fontFamily: "outfit-medium" }}>
+              {place.displayName?.text}
+            </Text>
+            <Text style={{ color: Colors.GRAY, fontFamily: "outfit" }}>
+              {place?.shortFormattedAddress}
+            </Text>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <FontAwesome name="location-arrow" size={25} color="white" />
-            </Pressable>
+              <View style={{ marginTop: 5 }}>
+                <Text
+                  style={{
+                    fontFamily: "outfit",
+                    color: Colors.GRAY,
+                    fontSize: 17,
+                  }}
+                >
+                  Connectors
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "outfit-medium",
+                    fontSize: 20,
+                    marginTop: 2,
+                  }}
+                >
+                  {place?.evChargeOptions?.connectorCount} Points
+                </Text>
+              </View>
+              <Pressable
+                style={{
+                  padding: 12,
+                  backgroundColor: Colors.PRIMARY,
+                  borderRadius: 6,
+                  paddingHorizontal: 14,
+                  height: verticalScale(50),
+                }}
+                onPress={() => onDirectionClick()}
+              >
+                <FontAwesome name="location-arrow" size={25} color="white" />
+              </Pressable>
+            </View>
           </View>
         </View>
       </LinearGradient>

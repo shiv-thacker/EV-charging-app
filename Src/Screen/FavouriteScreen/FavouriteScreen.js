@@ -16,6 +16,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Authcontext } from "../../Context/Authcontext";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { moderateScale } from "../../Utils/Dimensions";
 
 const ios = Platform.OS == "ios";
 export default function FavouriteScreen() {
@@ -53,7 +54,11 @@ export default function FavouriteScreen() {
     });
   };
   return (
-    <View style={{ paddingTop: ios ? top : top + hp(0) }}>
+    <View
+      style={{
+        paddingTop: ios ? top : top + hp(0),
+      }}
+    >
       <Text style={{ padding: 10, fontFamily: "outfit-medium", fontSize: 30 }}>
         My Favourite <Text style={{ color: Colors.PRIMARY }}>Place</Text>
       </Text>

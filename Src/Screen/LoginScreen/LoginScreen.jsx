@@ -10,6 +10,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   ScrollView,
+  Linking,
 } from "react-native";
 import React, { useState } from "react";
 import Colors from "../../Utils/Colors";
@@ -129,10 +130,10 @@ export default function LoginScreen() {
         }}
       >
         <StatusBar style={"dark"} />
-        <Image
+        {/* <Image
           style={styles.logoImage}
           source={require("../../../assets/Images/evlogo.png")}
-        />
+        /> */}
 
         <Image
           source={require("../../../assets/Images/ev-vehicle.png")}
@@ -197,6 +198,32 @@ export default function LoginScreen() {
                     }}
                   >
                     Sign Up
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: "80%",
+                    alignSelf: "center",
+                  }}
+                  onPress={() => {
+                    Linking.openURL(
+                      "https://sites.google.com/view/evcharging-station-app/home"
+                    );
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: Colors.GRAY,
+                      textAlign: "center",
+                      marginTop: verticalScale(2),
+                      fontSize: verticalScale(15),
+                    }}
+                  >
+                    By continuing, you are assure to accept our{" "}
+                    <Text style={{ color: Colors.BLUE, textAlign: "center" }}>
+                      Privacy Policy
+                    </Text>
+                    , made by shivang thacker(developer)
                   </Text>
                 </TouchableOpacity>
               </View>

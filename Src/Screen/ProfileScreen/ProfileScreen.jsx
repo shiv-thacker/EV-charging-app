@@ -1,8 +1,14 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+} from "react-native";
 import React, { useContext } from "react";
 // import { ClerkProvider, SignedIn, SignedOut, useAuth } from "@clerk/clerk-expo";
 import Colors from "../../Utils/Colors";
-import { moderateScale } from "../../Utils/Dimensions";
+import { moderateScale, verticalScale } from "../../Utils/Dimensions";
 import { auth } from "../../Utils/FirebaseConfig";
 import { Authcontext } from "../../Context/Authcontext";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -16,20 +22,47 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: hp(2), fontWeight: "600" }}>
-        Email address:- {user?.email}
+        Login Email address:- {user?.email}
       </Text>
-      <TouchableOpacity onPress={signOut} style={styles.signOut}>
-        <Text
+      <View>
+        <TouchableOpacity onPress={signOut} style={styles.signOut}>
+          <Text
+            style={{
+              color: Colors.WHITE,
+              textAlign: "center",
+              fontFamily: "outfit",
+              fontSize: 17,
+            }}
+          >
+            Signout
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{
-            color: Colors.WHITE,
-            textAlign: "center",
-            fontFamily: "outfit",
-            fontSize: 17,
+            width: "80%",
+            alignSelf: "center",
+          }}
+          onPress={() => {
+            Linking.openURL(
+              "https://sites.google.com/view/evcharging-station-app/home"
+            );
           }}
         >
-          Signout
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              color: Colors.GRAY,
+              textAlign: "center",
+              marginTop: verticalScale(2),
+              fontSize: verticalScale(15),
+            }}
+          >
+            <Text style={{ color: Colors.BLUE, textAlign: "center" }}>
+              Privacy Policy
+            </Text>
+            , made by shivang thacker(developer)
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -46,5 +79,8 @@ const styles = StyleSheet.create({
     padding: moderateScale(16),
     justifyContent: "center",
     flex: 1,
+    paddingVertical: verticalScale(10),
+    justifyContent: "space-around",
+    backgroundColor: Colors.WHITE,
   },
 });
